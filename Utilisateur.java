@@ -3,7 +3,7 @@ import java.time.LocalDateTime;
 public class Utilisateur {
     // Cette classe contient les informations d'un utilisateur
     // Cette classe n'est pas encore finie (il manque les méthodes)
-    private String nomUtilisateur;
+    private String pseudo;
     private float rendementJournalier , rendementPeriode;
     private int nbEncouragements;
     private Jour jourRentable;
@@ -12,18 +12,20 @@ public class Utilisateur {
     private int[] badges;
     private Projet[] projets;
 
-    public Utilisateur(String nomUtilisateur) {
-        this.nomUtilisateur = nomUtilisateur;
+    public Utilisateur(String pseudo) {
+
+        this.pseudo = pseudo;
+        this.calendrier = new Calendrier();
     }
 
 
     // -------------------------------------- Delimitation Setters/Getters --------------------------------------
-    public String getNomUtilisateur() {
-        return nomUtilisateur;
+    public String getPseudo() {
+        return pseudo;
     }
 
-    public void setNomUtilisateur(String nomUtilisateur) {
-        this.nomUtilisateur = nomUtilisateur;
+    public void setNomUtilisateur(String pseudo) {
+        this.pseudo = pseudo;
     }
 
     public float getRendementJournalier() {

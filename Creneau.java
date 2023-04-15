@@ -1,4 +1,5 @@
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 // Cette classe contient les informations d'un creaneau
 // Cette classe n'est pas encore finie (il manque les méthodes)
 
@@ -9,10 +10,10 @@ public class Creneau implements Decomposable{
     // Tache simple car un creneau ne peux contenir qu'une seule tache , pas une liste de taches
     // Les taches decomposables sont de base des taches simples fragmentées.
 
-    public Creneau(LocalDateTime debut, LocalDateTime fin, boolean libre) {
+    public Creneau(LocalDateTime debut, LocalDateTime fin) {
         this.debut = debut;
         this.fin = fin;
-        this.libre = libre;
+        this.libre = true;
     }
 
     // -------------------------------------- Delimitation Setters/Getters --------------------------------------

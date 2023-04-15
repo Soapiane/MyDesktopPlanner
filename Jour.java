@@ -38,4 +38,24 @@ public class Jour {
         this.creneaux.remove(creneau);
     }
     // -------------------------------------- Delimitation Setters/Getters --------------------------------------
+
+    public void ajouterTache(Tache tache){
+            //TODO
+    }
+
+    public void ajouterCreneaux(Creneau creneau){
+        creneaux.add(creneau);
+    }
+
+    public void ajouterCreneaux(LocalDateTime debut, LocalDateTime fin) throws ExceptionCollisionHorairesCreneau{
+        for (Creneau creneau : creneaux) {
+            // On teste si il y'a collision avec un creneau existant
+            if ((creneau.getDebut().isBefore(debut) && creneau.getFin().isAfter(fin)) || (creneau.getDebut().isBefore(fin) && creneau.getFin().isAfter(fin))) {
+                throw new ExceptionCollisionHorairesCreneau("Les horaires de ce creneau sont en collision avec celles d'un autre deja existant.");
+            }
+        }
+        // On peux donc creer ce creneau.
+        Creneau creneau = new Creneau(debut, fin);
+        ajouterCreneaux(creneau);
+    }
 }

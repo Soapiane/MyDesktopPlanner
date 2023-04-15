@@ -4,18 +4,19 @@ import java.util.ArrayList;
 
 // Don't forget that we need to store the days in a file. So , we have to do some file IO.
 public class Calendrier {
-    private Jour[] jours;
+    private ArrayList<Jour> jours;
     private ArrayList<Periode> periode;
+    // Les jours des periodes doivent etre ajoutés a la array Jour[]
 
 public Calendrier() {
 // This constructor is umpty.
 }
     // -------------------------------------- Delimitation Setters/Getters --------------------------------------
-    public Jour[] getJours() {
+    public ArrayList<Jour> getJours() {
         return jours;
     }
 
-    public void setJours(Jour[] jours) {
+    public void setJours(ArrayList<Jour> jours) {
         this.jours = jours;
     }
 
@@ -37,6 +38,12 @@ public Calendrier() {
 
     // -------------------------------------- Delimitation Setters/Getters --------------------------------------
 
+    public void ajouterJour(Jour jour){
+     jours.add(jour);
+    }
+    public void AjouterTache(Tache tache) {
+        //TODO
+    }
 }
 
 
