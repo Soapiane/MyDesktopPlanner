@@ -1,5 +1,6 @@
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        // Le but de ce programme est de créer un système de gestion de projets , qui permets de gerer son temps et de suivre son avancement
+
     }
 }
