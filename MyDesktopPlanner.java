@@ -5,10 +5,18 @@ public class MyDesktopPlanner {
     private HashMap<String,Utilisateur> utilisateurs;
 
     public MyDesktopPlanner() {
+        utilisateurs = new HashMap<>();
         // This constructor is umpty.
     }
-    public void ajouterUtilisateur(String nom) {
-        Utilisateur utilisateur = new Utilisateur(nom);
+    public void ajouterUtilisateur(String nom)
+    {
+        if (utilisateurs.containsKey(nom)) {
+            System.out.println("ATTENTION : Utilisateur deja existant");
+        }
+        else{
+            Utilisateur utilisateur = new Utilisateur(nom);
+            utilisateurs.put(nom,utilisateur);
+        }
     }
 
     public void supprimerUtilisateur(String nom) {
@@ -16,7 +24,17 @@ public class MyDesktopPlanner {
     }
 
     public Utilisateur authentifierUtilisateur(String nom) {
-        return utilisateurs.get(nom);
+        Utilisateur u = utilisateurs.get(nom);
+        if (u == null) {
+            System.out.println("ATTENTION : Utilisateur inexistant , returned null");
+        }
+        return u;
+    }
+
+    public void afficherUtilisateurs() {
+        for (String nom : utilisateurs.keySet()) {
+            System.out.println(nom);
+        }
     }
 
 }

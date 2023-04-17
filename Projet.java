@@ -5,10 +5,13 @@ public class Projet {
     private String nom,description;
     private ArrayList<Tache> taches;
 
-    public Projet(String nom, String description, ArrayList<Tache> taches) {
+    private final Utilisateur utilisateur;
+
+    public Projet(String nom, String description, ArrayList<Tache> taches,Utilisateur utilisateur) {
         this.nom = nom;
         this.description = description;
         this.taches = taches;
+        this.utilisateur = utilisateur;
     }
 
     // -------------------------------------- Delimitation Setters/Getters --------------------------------------
@@ -34,6 +37,10 @@ public class Projet {
 
     public void setTaches(ArrayList<Tache> taches) {
         this.taches = taches;
+    }
+
+    public Utilisateur getUtilisateur() {
+        return utilisateur;
     }
     // -------------------------------------- Delimitation Setters/Getters --------------------------------------
 
