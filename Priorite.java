@@ -1,4 +1,4 @@
 // Cette classe contiens les priorités possibles d'une tache
-public enum Priorité {
+public enum Priorite {
 LOW,MEDIUM,HIGH;
 }

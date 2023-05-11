@@ -1,14 +1,15 @@
-import java.time.Duration;
+import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 // Cette classe contient les informations des jours
 // Cette classe n'est pas finie , il manque les methodes
 
-public class Jour {
-    private LinkedList<Creneau> creneaux;
+public class Jour implements Serializable {
+    private ArrayList<Creneau> creneaux;
     private LocalDate date;
 
     private final Utilisateur utilisateur;
@@ -25,7 +26,7 @@ public class Jour {
         this.utilisateur = utilisateur;
         this.nbTachesAccomplies = 0;
         this.felicitations = false;
-        this.creneaux = new LinkedList<Creneau>();
+        this.creneaux = new ArrayList<Creneau>();
     }
 
 
@@ -42,11 +43,11 @@ public class Jour {
     public Utilisateur getUtilisateur() {
         return utilisateur;
     }
-    public LinkedList<Creneau> getCreneaux() {
+    public ArrayList<Creneau> getCreneaux() {
         return creneaux;
     }
 
-    public void setCreneaux(LinkedList<Creneau> creneaux) {
+    public void setCreneaux(ArrayList<Creneau> creneaux) {
         this.creneaux = creneaux;
     }
 
@@ -97,7 +98,7 @@ public class Jour {
             }
         }
         // On peux donc creer ce creneau.
-        Creneau creneau = new Creneau(debut, fin,utilisateur);
+        Creneau creneau = new Creneau(debut, fin, this, utilisateur);
         creneaux.add(creneau);
     }
 

@@ -1,27 +1,29 @@
 // Cette classe contiens les informations d'une tache
 // Cette classe n'est pas encore finie (il manque les méthodes)
 
+import java.io.Serializable;
+import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
-public abstract class Tache {
+public abstract class Tache implements Serializable {
     private String nom;
-    private LocalDateTime durée;
-    private Priorité priorité;
-    private LocalDate dateLimite;
+    private Duration durée;
+    private Priorite priorite;
+    private LocalDate dateLimite;   // Dans ce projet , la limite est une date et non une heure
     private Categorie categorie;
     private boolean isPeriodique;
 
+
     private Etat etat;
 
-    public Tache(String nom, LocalDateTime durée, Priorité priorité, LocalDate dateLimite, Categorie categorie) {
+    public Tache(String nom, Duration durée, Priorite priorite, LocalDate dateLimite, Categorie categorie, boolean isPeriodique, Etat etat) {
         this.nom = nom;
         this.durée = durée;
-        this.priorité = priorité;
+        this.priorite = priorite;
         this.dateLimite = dateLimite;
         this.categorie = categorie;
-        this.etat = Etat.UNSCHEDULED;
-        this.isPeriodique = false;      // La tache par defaut n'est pas periodique (lire l'ennoncé)
+        this.isPeriodique = isPeriodique;
+        this.etat = etat;
     }
 
     public String getNom() {
@@ -50,20 +52,20 @@ public abstract class Tache {
         this.nom = nom;
     }
 
-    public LocalDateTime getDurée() {
+    public Duration getDurée() {
         return durée;
     }
 
-    public void setDurée(LocalDateTime durée) {
+    public void setDurée(Duration durée) {
         this.durée = durée;
     }
 
-    public Priorité getPriorité() {
-        return priorité;
+    public Priorite getPriorité() {
+        return priorite;
     }
 
-    public void setPriorité(Priorité priorité) {
-        this.priorité = priorité;
+    public void setPriorité(Priorite priorite) {
+        this.priorite = priorite;
     }
 
     public LocalDate getDateLimite() {
@@ -82,6 +84,21 @@ public abstract class Tache {
         this.categorie = categorie;
     }
     // -------------------------------------- Delimitation Setters/Getters --------------------------------------
+
+    abstract boolean isDecomposable();  // Retourne vrai si la tache est décomposable , faux sinon
+
+    // Cette méthode affiche les informations d'une tache
+    public  void afficher(){
+        System.out.println("Nom : "+nom);
+        System.out.println("Durée : "+durée);
+        System.out.println("Priorité : "+ priorite);
+        System.out.println("Date limite : "+dateLimite);
+        System.out.println("Catégorie : "+categorie);
+        System.out.println("Etat : "+etat);
+        System.out.println("Est périodique : "+isPeriodique);
+        System.out.println("Est décomposable : "+isDecomposable());
+    };
+
 
 
 }

@@ -1,4 +1,4 @@
-import java.time.LocalDateTime;
+import java.time.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -12,10 +12,23 @@ public class Main {
 
         Utilisateur sofiane = myDesktopPlanner.authentifierUtilisateur("Sofiane");
 
-        // Exemple d'ajout de creneau
-        sofiane.ajouterCreneau(LocalDateTime.of(2023, 12, 1, 10, 0), LocalDateTime.of(2023, 12, 1, 10, 25));
-        sofiane.ajouterCreneau(LocalDateTime.of(2023, 12, 1, 10, 0), LocalDateTime.of(2023, 12, 1, 12, 0));
+        Calendrier calendrier = sofiane.getCalendrier();
 
-        sofiane.afficher();
+        // Exemple d'ajout de creneau
+        try {
+            calendrier.ajouterCreneau(LocalDate.of(2023, 12, 1), LocalTime.of(8, 30),LocalTime.of(10,25));
+            calendrier.ajouterCreneau(LocalDate.of(2023, 12, 2), LocalTime.of(10, 30),LocalTime.of(12,25));
+            calendrier.ajouterCreneau(LocalDate.of(2023, 12, 3), LocalTime.of(8, 30),LocalTime.of(10,25));
+            calendrier.ajouterCreneau(LocalDate.of(2023, 12, 4), LocalTime.of(10, 30),LocalTime.of(12,25));
+            calendrier.ajouterCreneau(LocalDate.of(2023, 12, 5), LocalTime.of(8, 30),LocalTime.of(10,25));
+            calendrier.ajouterCreneau(LocalDate.of(2023, 12, 6), LocalTime.of(10, 30),LocalTime.of(12,25));
+
+            calendrier.getJoursIntervalle(LocalDate.of(2023, 12, 1), LocalDate.of(2023, 12, 6)).forEach(System.out::println);
+
+        } catch (ExceptionCollisionHorairesCreneau e) {
+            throw new RuntimeException(e);
+        }
+
+
     }
 }

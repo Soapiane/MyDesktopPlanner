@@ -37,4 +37,10 @@ public class MyDesktopPlanner {
         }
     }
 
+    public void SupprimerUtilisateur(String nom) {
+        utilisateurs.remove(nom);
+    }
+
+
+
 }

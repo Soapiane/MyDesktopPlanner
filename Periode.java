@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 // Cette classe concerne les periodes que l'utilisateur pourra spécifier sur son calendrier
-public class Periode {
+public class Periode implements Serializable {
     private ArrayList<Jour> jours;
     private final Utilisateur utilisateur;
 

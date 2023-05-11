@@ -1,8 +1,11 @@
+import java.io.Serializable;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
-public class Utilisateur {
+public class Utilisateur implements Serializable {
     // Cette classe contient les informations d'un utilisateur
     // Cette classe n'est pas encore finie (il manque les méthodes)
     // L'utilisateur est envoyé comme contexte dans les classes Jour et Calendrier
@@ -14,9 +17,8 @@ public class Utilisateur {
     private Duration tempsMinCreneau;
     private Calendrier calendrier;
     private int[] badges;
-    private Projet[] projets;
+    private ArrayList<Projet> projets;
 
-    private ArrayList<Tache> tachesNonPlanifiees;
 
     private int nbMinimalTachesParJour;         // Pour l'attribution des badges (lire l'ennoncé)
 
@@ -43,13 +45,9 @@ public class Utilisateur {
         return tempsMinCreneau;
     }
 
-    public ArrayList<Tache> getTachesNonPlanifiees() {
-        return tachesNonPlanifiees;
-    }
 
-    public void setTachesNonPlanifiees(ArrayList<Tache> tachesNonPlanifiees) {
-        this.tachesNonPlanifiees = tachesNonPlanifiees;
-    }
+
+
 
     public void setTempsMinCreneau(Duration tempsMinCreneau) {
         this.tempsMinCreneau = tempsMinCreneau;
@@ -119,33 +117,31 @@ public class Utilisateur {
         this.badges = badges;
     }
 
-    public Projet[] getProjets() {
+    public ArrayList<Projet> getProjets() {
         return projets;
     }
 
-    public void setProjets(Projet[] projets) {
+    public void setProjets(ArrayList<Projet> projets) {
         this.projets = projets;
     }
     // -------------------------------------- Delimitation Setters/Getters --------------------------------------
 
 
     // Remember to send the context in every method
-    public void ajouterTache(Tache tache){
-        this.tachesNonPlanifiees.add(tache);
-    }
+
     public void ajouterProjet(Projet projet){
-        // TODO
+        projets.add(projet);
     }
-    public void ajouterPeriode(Periode periode){
-        // TODO
+
+    public void supprimerProjet(Projet projet){
+        projets.remove(projet);
     }
-    public void plannifierUneTache(){
-        // TODO
-    }
+
     // Cette fonction permets de rajouter les creneaux libres d'une journée
-    public void ajouterCreneau(LocalDateTime debut, LocalDateTime fin){
+    // Don't use this , access jours from Calendrier
+    public void ajouterCreneau(LocalDate jour , LocalTime debut, LocalTime fin){
         try {
-            calendrier.ajouterCreneau(debut, fin);
+            calendrier.ajouterCreneau(jour , debut, fin);
         }
         catch (Exception e){
             System.out.println(e.getMessage());
@@ -163,11 +159,13 @@ public class Utilisateur {
         System.out.println("Calendrier : " + this.calendrier);
         System.out.println("Badges : " + this.badges);
         System.out.println("Projets : " + this.projets);
-        System.out.println("Taches non planifiees : " + this.tachesNonPlanifiees);
         System.out.println("Temps categories : " + this.tempsCategories);
         System.out.println("Nombre minimal de taches par jour : " + this.nbMinimalTachesParJour);
         calendrier.afficher();
         System.out.println("------- Fin affichage utilisateur -------");
     }
+
+
+
 
 }
