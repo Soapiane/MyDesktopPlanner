@@ -11,16 +11,16 @@ import java.util.*;
 public class Calendrier implements Serializable {
     private TreeMap<LocalDate,Jour> jours; // Tree
     private ArrayList<Periode> periode;
-    // Les jours des periodes doivent etre ajoutés a la array Jour[]
+    // Les jours des periodes doivent etre ajoutés a la array Jour[].
 
     private ArrayList<Tache> tachesUnscheduled;
     private final Utilisateur utilisateur;
 
 public Calendrier(Utilisateur utilisateur) {
 this.utilisateur = utilisateur;
-this.jours = new TreeMap<LocalDate,Jour>();
-this.tachesUnscheduled = new ArrayList<Tache>();
-this.periode = new ArrayList<Periode>();
+this.jours = new TreeMap<>();
+this.tachesUnscheduled = new ArrayList<>();
+this.periode = new ArrayList<>();
 
 }
     // -------------------------------------- Delimitation Setters/Getters --------------------------------------
@@ -69,10 +69,10 @@ this.periode = new ArrayList<Periode>();
 
     public void ajouterCreneau(LocalDate jourCnreneau , LocalTime tempsDebut, LocalTime tempsFin) throws ExceptionCollisionHorairesCreneau{
     try {
-        // On crée un creneau en récupérant les heures de variables debut et fin
-        // La date du jour est contenu dans la variable debut
-        // Si le jour existe deja , on ne fait que de l'inserer dans la liste des creneaux de ce jour
-        // Si le jour n'existe pas , on le crée , et on l'ajoute a la liste des jours du calendrier
+        // On crée un creneau en récupérant les heures de variables debut et fin.
+        // La date du jour est contenu dans la variable debut.
+        // Si le jour existe deja, on ne fait que de l'inserer dans la liste des creneaux de ce jour.
+        // Si le jour n'existe pas, on le crée , et on l'ajoute a la liste des jours du calendrier.
 
         boolean jourExiste = false;
         Jour jour = null;
@@ -120,21 +120,23 @@ this.periode = new ArrayList<Periode>();
         }
 }
 
-    public void supprimerTache(Tache tache){
-        tachesUnscheduled.remove(tache);
-    }
+
 
 
     // Ajouter une nouvelle tache unscheduled
     public void ajouterTache(String nom, Duration duree , Priorite priorite , LocalDate dateLimite , Categorie categorie , boolean isPeriodique,boolean isDecomposable) {
         Tache nouvelleTache;
         if (isDecomposable){
-            nouvelleTache = new TacheDecomposable(nom, duree, priorite, dateLimite, categorie, isPeriodique, Etat.UNSCHEDULED);
+            nouvelleTache = new TacheDecomposable(nom, duree, priorite, dateLimite, categorie, Etat.UNSCHEDULED,0);
         }
         else{
             nouvelleTache = new TacheSimple(nom, duree, priorite, dateLimite, categorie, isPeriodique, Etat.UNSCHEDULED);
         }
         tachesUnscheduled.add(nouvelleTache);
+    }
+
+    public void supprimerTache(Tache tache){
+        tachesUnscheduled.remove(tache);
     }
 
     public void afficherTachesUnscheduled(){
@@ -148,9 +150,9 @@ this.periode = new ArrayList<Periode>();
     }
 
 
-    public ArrayList<Jour> getJoursIntervalle(LocalDate début , LocalDate fin){
+    public ArrayList<Jour> getJoursIntervalle(LocalDate debut , LocalDate fin){
     // Cette fonction renvoies une liste contenant tout les jours du calendrier [EXISTANTS] dans l'intervalle indiqué
-        return new ArrayList<Jour>(jours.subMap(début,fin.plusDays(1)).values());
+        return new ArrayList<>(jours.subMap(debut,fin.plusDays(1)).values());
     }
 
     public ArrayList<Creneau> getCreneauxJour(LocalDate date){
@@ -160,16 +162,15 @@ this.periode = new ArrayList<Periode>();
     public void ajouterTache(Tache tache){
     tachesUnscheduled.add(tache);
     }
-    public void PlannifierTacheManuellement(Tache tache , Creneau creneau){
+
+
+    public void PlannifierTacheManuellement(Tache tache , Creneau creneau) throws ExceptionCreneauOccupe, ExceptionDureeTacheIncompatible {
     // Cette fonction permets de plannifier une tache (c'est a dire l'associer a un créneau au choix)
         // Si cette tache est simple , on l'ajoute simplement au créneau
         // Si cette tache est décomposable , et que la durée du créneau
-        try {
-            creneau.ajouterTache(tache);
-        } catch (ExceptionCollisionHorairesCreneau e) {
-            // Cette erreur est théoriquement irréalisable , mais on doit quand méme catch l'erreur pour que le progamme se compile
-            throw new RuntimeException(e);
-        }
+        // Cette fonction renvoies le créneau dans lequel la tache a été plannifiée.
+        creneau.ajouterTache(tache);
+
     }
 
     public void plannifierTachePeriode(){

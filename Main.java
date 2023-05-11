@@ -1,4 +1,6 @@
 import java.time.*;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
@@ -17,15 +19,19 @@ public class Main {
         // Exemple d'ajout de creneau
         try {
             calendrier.ajouterCreneau(LocalDate.of(2023, 12, 1), LocalTime.of(8, 30),LocalTime.of(10,25));
-            calendrier.ajouterCreneau(LocalDate.of(2023, 12, 2), LocalTime.of(10, 30),LocalTime.of(12,25));
-            calendrier.ajouterCreneau(LocalDate.of(2023, 12, 3), LocalTime.of(8, 30),LocalTime.of(10,25));
-            calendrier.ajouterCreneau(LocalDate.of(2023, 12, 4), LocalTime.of(10, 30),LocalTime.of(12,25));
-            calendrier.ajouterCreneau(LocalDate.of(2023, 12, 5), LocalTime.of(8, 30),LocalTime.of(10,25));
-            calendrier.ajouterCreneau(LocalDate.of(2023, 12, 6), LocalTime.of(10, 30),LocalTime.of(12,25));
+            ArrayList<Creneau> creneaux =  calendrier.getCreneauxJour(LocalDate.of(2023,12,1));
 
-            calendrier.getJoursIntervalle(LocalDate.of(2023, 12, 1), LocalDate.of(2023, 12, 6)).forEach(System.out::println);
+            TacheDecomposable tacheDec = new TacheDecomposable("Finir le TP POO", Duration.of(2, ChronoUnit.HOURS), Priorite.HIGH, LocalDate.of(2023, 12, 1), Categorie.STUDIES);
+
+            Creneau monCreneau = creneaux.get(0);
+            Tache nouvelle_tache = monCreneau.ajouterTache(tacheDec);
+            nouvelle_tache.afficher();
 
         } catch (ExceptionCollisionHorairesCreneau e) {
+            throw new RuntimeException(e);
+        } catch (ExceptionDureeTacheIncompatible e) {
+            throw new RuntimeException(e);
+        } catch (ExceptionCreneauOccupe e) {
             throw new RuntimeException(e);
         }
 

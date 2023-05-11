@@ -12,6 +12,7 @@ public class Creneau implements Decomposable , Serializable {
 
     private final Jour jour; // Envoyer the context here is important pour decomposer le creneau
     private final Utilisateur utilisateur;
+
     // Tache simple car un creneau ne peux contenir qu'une seule tache , pas une liste de taches
     // Les taches decomposables sont de base des taches simples fragmentées.
 
@@ -70,9 +71,10 @@ public class Creneau implements Decomposable , Serializable {
 
     public void decomposer(){
         // Cette méthode change le temps de fin , et insére un nouveau créneau a l'heure de fin de l'ancien
+        // Elle se base sur la tache contenue dans le creneau pour déterminer la durée du nouveau creneau
         // Le nouveau creneau est libre , et a la meme heure de fin que l'ancien
 
-        LocalTime nouvelle_fin  = this.debut.plus(tache.getDurée());
+        LocalTime nouvelle_fin  = this.debut.plus(tache.getDuree());
         // Verifier si le creneau peut etre décomposé en verifiant la durée du nouveau creneau:
         if (Duration.between(nouvelle_fin,this.fin).compareTo(utilisateur.getTempsMinCreneau()) < 0){
             // Si la durée du nouveau creneau est inferieure a la durée minimale d'un creneau , on ne peut pas le décomposer
@@ -102,17 +104,58 @@ public class Creneau implements Decomposable , Serializable {
         System.out.println("----- Fin affichage creneau -----");
     }
 
-    public void ajouterTache(Tache tache) throws ExceptionCollisionHorairesCreneau{
+    public Tache ajouterTache(Tache tache) throws ExceptionCreneauOccupe , ExceptionDureeTacheIncompatible{
         // Si le creneau est libre , on ajoute la tache , sinon , on renvoies une exception
         // Une fois la tache ajoutée , on décompose le creneau en deux , l'un contenant la tache pendant toute sa durée, l'autre libre
         if (this.libre){
-            this.tache = tache;
-            this.libre = false;
-            this.decomposer();
+            if (tache.isDecomposable()){
+                // Tache decomposable , on assigne la tache au créneau , ensuite on la décompose en changeant le nom.
+                // On insére la tache dans le créneau , on crée une nouvelle tache qui contiens la durée restante pour completer cette tache et on la return
+                // On décompose le crénau en deux , l'un contenant la tache , l'autre libre
+
+
+                // 1 - Si la durée de la tache est supérieure a celle du créneau, Créer la nouvelle tache :
+                if (tache.getDuree().compareTo(Duration.between(getDebut(),getFin())) > 0){
+                    // Créer la nouvelle tache
+                    TacheDecomposable tacheDec = (TacheDecomposable) tache;
+                    Tache nouvelle_tache = new TacheDecomposable(tacheDec.getNom(),tacheDec.getDuree().minus(Duration.between(getDebut(),getFin())),tacheDec.getPriorite(),tacheDec.getDateLimite(),tacheDec.getCategorie(),tacheDec.getEtat(),tacheDec.getNumeroSousTache());
+                        // On insere la tache dans le creneau
+                    this.tache = tacheDec;
+                    this.tache.setDuree(Duration.between(getDebut(),getFin()));
+                    this.libre = false;
+                    // On décompose le créneau si possible
+                    return nouvelle_tache;
+                }
+                else{
+                    // Si la durée de la tache est inférieure a celle du créneau , on insere la tache dans le creneau , on décompose le creneau si possible et on return null
+                    this.tache = tache;
+                    this.libre = false;
+                }
+
+            }
+            else{
+                // Tache simple
+                // On verifie si la durée de la tache est inférieure a la durée du créneau :
+                if (tache.getDuree().compareTo(Duration.between(getDebut(),getFin())) < 0){
+                    // Si la durée de la tache est inférieure a la durée du créneau , on décompose le creneau en deux
+                    // On insere la tache dans le creneau
+                    this.tache = tache;
+                    this.libre = false;
+                    // On décompose le créneau si possible
+
+
+                }
+                else{
+                    // Si la durée de la tache est supérieure a la durée du créneau , on lance une exception
+                    throw new ExceptionDureeTacheIncompatible("La durée de la tache est supérieure a la durée du creneau");
+                }
+            }
         }
         else{
-            throw new ExceptionCollisionHorairesCreneau("Le creneau est deja occupé");
+            throw new ExceptionCreneauOccupe("Impossible d'ajouter une tache a un creneau occupé");
         }
+        this.decomposer();
+        return null;
     }
 
     public void supprimerTache(){
@@ -121,8 +164,6 @@ public class Creneau implements Decomposable , Serializable {
         utilisateur.getCalendrier().ajouterTache(tache);
         this.libre = true;
         this.tache = null;
-
-
     }
 }
 

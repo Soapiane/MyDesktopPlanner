@@ -7,22 +7,21 @@ import java.time.LocalDate;
 
 public abstract class Tache implements Serializable {
     private String nom;
-    private Duration durée;
+    private Duration duree;
     private Priorite priorite;
     private LocalDate dateLimite;   // Dans ce projet , la limite est une date et non une heure
     private Categorie categorie;
-    private boolean isPeriodique;
+
 
 
     private Etat etat;
 
-    public Tache(String nom, Duration durée, Priorite priorite, LocalDate dateLimite, Categorie categorie, boolean isPeriodique, Etat etat) {
+    public Tache(String nom, Duration duree, Priorite priorite, LocalDate dateLimite, Categorie categorie, Etat etat) {
         this.nom = nom;
-        this.durée = durée;
+        this.duree = duree;
         this.priorite = priorite;
         this.dateLimite = dateLimite;
         this.categorie = categorie;
-        this.isPeriodique = isPeriodique;
         this.etat = etat;
     }
 
@@ -32,13 +31,7 @@ public abstract class Tache implements Serializable {
 
     // -------------------------------------- Delimitation Setters/Getters --------------------------------------
 
-    public boolean isPeriodique() {
-        return isPeriodique;
-    }
 
-    public void setPeriodique(boolean periodique) {
-        isPeriodique = periodique;
-    }
 
     public Etat getEtat() {
         return etat;
@@ -52,19 +45,19 @@ public abstract class Tache implements Serializable {
         this.nom = nom;
     }
 
-    public Duration getDurée() {
-        return durée;
+    public Duration getDuree() {
+        return duree;
     }
 
-    public void setDurée(Duration durée) {
-        this.durée = durée;
+    public void setDuree(Duration duree) {
+        this.duree = duree;
     }
 
-    public Priorite getPriorité() {
+    public Priorite getPriorite() {
         return priorite;
     }
 
-    public void setPriorité(Priorite priorite) {
+    public void setPriorite(Priorite priorite) {
         this.priorite = priorite;
     }
 
@@ -90,12 +83,11 @@ public abstract class Tache implements Serializable {
     // Cette méthode affiche les informations d'une tache
     public  void afficher(){
         System.out.println("Nom : "+nom);
-        System.out.println("Durée : "+durée);
+        System.out.println("Durée : "+duree);
         System.out.println("Priorité : "+ priorite);
         System.out.println("Date limite : "+dateLimite);
         System.out.println("Catégorie : "+categorie);
         System.out.println("Etat : "+etat);
-        System.out.println("Est périodique : "+isPeriodique);
         System.out.println("Est décomposable : "+isDecomposable());
     };
 
